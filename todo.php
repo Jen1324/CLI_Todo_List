@@ -8,6 +8,7 @@ do {
     // Iterate through list items
     foreach ($items as $key => $item) {
         // Display each item and a newline
+        $key++;
         echo "[{$key}] {$item}\n";
     }
 
@@ -30,7 +31,7 @@ do {
         // Get array key
         $key = trim(fgets(STDIN));
         // Remove from array
-        unset($items[$key]);
+        unset($items[$key - 1]);
     }
 // Exit when input is (Q)uit
 } while ($input != 'Q' && $input != 'q');
