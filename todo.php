@@ -10,20 +10,12 @@ function list_items($list) {
 
     foreach ($list as $key => $value){
 
-        $add = $key +1;
-        $result .= '[' . $value . ']' . $value . PHP_EOL;
+        $result .= '[' . ($key + 1) . ']' . $value . PHP_EOL;
     }
         return $result;
 }
 
-echo list_items($items);
-
-
-    // Return string of list items separated by newlines.
-    // Should be listed [KEY] Value like this:
-    // [1] TODO item 1
-    // [2] TODO item 2 - blah
-    // DO NOT USE ECHO, USE RETURN
+// echo list_items($items);
 
 
 // Get STDIN, strip whitespace and newlines, 
@@ -35,9 +27,46 @@ function get_input($upper = FALSE) {
 }
 
 
-// {
-//     // Return filtered STDIN input
-// }
+ function sort_menu($list){
+      echo '(A) - Z, (Z) - A, (O)rder entered, (R)everse order entered : ';
+      $input = get_input(TRUE);
+
+      // switch(get_input(true)) {
+      //   case 'A':
+      //       asort($list);
+      //       break;
+      //   case 'Z':
+      //       arsort($list);
+      //       break;
+      //   case 'O':
+      //       ksort($list);
+      //       break;
+      //   case 'R':
+      //       krsort($list);
+      //       break;
+      // }
+
+
+        if ($input == 'A') {
+            asort($list);
+        }
+            elseif ($input == 'Z') {
+                arsort($list);
+            }
+            elseif ($input == 'O') {
+                ksort($list);
+            }
+            elseif ($input == 'R') {
+                krsort($list);
+            } 
+
+    return $list;
+        
+
+    }
+
+
+
 
 // The loop!
 do {
@@ -49,7 +78,7 @@ do {
     }
 
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (Q)uit : ';
+    echo '(N)ew item, (R)emove item, (S)ort, (Q)uit : ';
 
     // Get the input from user
     // Use trim() to remove whitespace and newlines
@@ -60,7 +89,18 @@ do {
         // Ask for entry
         echo 'Enter item: ';
         // Add entry to list array
-        $items[] = get_input();
+        $newitem = get_input(); 
+        echo '(S)tart or (E)nd?';
+        $input = get_input(TRUE);
+        if ($input == 'S') {
+          array_unshift($items, $newitem);
+        }  else {
+          array_push($items, $newitem);
+        }
+
+
+
+
     } elseif ($input == 'R' || $input == 'r') {
         // Remove which item?
         echo 'Enter item number to remove: ';
@@ -68,12 +108,22 @@ do {
         $key = get_input();
         // Remove from array
         unset($items[$key - 1]);
-    }
+
+        }
+
+        elseif ($input == 'S') {
+          $items = sort_menu($items);
+
+        }
+    
+    
 // Exit when input is (Q)uit
 } while ($input != 'Q' && $input != 'q');
 
 // Say Goodbye!
 echo "Goodbye!\n";
+
+
 
 // Exit with 0 errors
 exit(0);
