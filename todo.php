@@ -65,7 +65,19 @@ function get_input($upper = FALSE) {
 
     }
 
-
+  function openfile($filename, $list) {
+  	is_readable($filename);
+    $filesize = filesize($filename);
+    $read = fopen($filename, 'r');
+    feof($read); 
+    $todo = trim(fread($read, $filesize));
+    $explotodo = explode("\n", $todo);
+    foreach ($explotodo as $value) {
+    	array_push($list, $value);
+	}
+    fclose($read);
+    return $list;
+  }
 
 
 // The loop!
@@ -78,7 +90,7 @@ do {
     }
 
     // Show the menu options
-    echo '(N)ew item, (R)emove item, (S)ort, (Q)uit : ';
+    echo '(N)ew item, (R)emove item, (S)ort, (Q)uit, (O)pen File, S(A)ve : ';
 
     // Get the input from user
     // Use trim() to remove whitespace and newlines
@@ -99,8 +111,6 @@ do {
         }
 
 
-
-
     } elseif ($input == 'R' || $input == 'r') {
         // Remove which item?
         echo 'Enter item number to remove: ';
@@ -115,6 +125,28 @@ do {
           $items = sort_menu($items);
 
         }
+
+        elseif ($input == 'F') {
+          array_shift($items);
+        }
+
+        elseif ($input == 'L') {
+          array_pop($items);
+        }
+
+        elseif ($input == 'O') {
+        	echo "What file do you want to open?";
+        	$filename = get_input();
+          $items = openfile($filename, $items);
+      	}
+
+         elseif ($input == 'A') {
+         	echo "What file do you want to save to?";
+         	$filename = get_input();
+         	$handle = fopen($filename, 'a');
+         	fwrite($handle, implode("\n", $items));
+         	fclose($handle);
+         }
     
     
 // Exit when input is (Q)uit
