@@ -80,6 +80,19 @@ function get_input($upper = FALSE) {
   }
 
 
+  function savefile($filename, $save) {
+	$handle = fopen($filename, 'w');
+	$wrote = fwrite($handle, implode("\n", $save));
+	    if ($wrote == true) {
+	      echo "Save was successful!\n";
+	    }	else {
+	        	echo "Save was unsuccessfull...\n";
+	        }
+	fclose($handle);
+	return $save;
+  }
+
+
 // The loop!
 do {
     // Iterate through list items
@@ -143,10 +156,20 @@ do {
          elseif ($input == 'A') {
          	echo "What file do you want to save to?";
          	$filename = get_input();
-         	$handle = fopen($filename, 'a');
-         	fwrite($handle, implode("\n", $items));
-         	fclose($handle);
-         }
+         	
+       			if (is_readable($filename)) {
+       				echo "This file already exists! Would you like to overwrite it? Y/N.\n";
+       				$input = get_input(TRUE);
+
+       				if ($input == 'Y') {
+       					savefile($filename, $items);
+						
+					} 	else {
+							echo "File not saved.\n";
+						} 
+
+         		}
+        } 		
     
     
 // Exit when input is (Q)uit
