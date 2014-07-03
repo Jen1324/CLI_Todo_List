@@ -4,11 +4,13 @@
 $items = array();
 
 // List array items formatted for CLI
-function list_items($list) {
+function list_items($list) 
+{
 
     $result = '';
 
-    foreach ($list as $key => $value){
+    foreach ($list as $key => $value)
+    {
 
         $result .= '[' . ($key + 1) . ']' . $value . PHP_EOL;
     }
@@ -20,7 +22,8 @@ function list_items($list) {
 
 // Get STDIN, strip whitespace and newlines, 
 // and convert to uppercase if $upper is true
-function get_input($upper = FALSE) {
+function get_input($upper = FALSE) 
+{
 
     $result = trim(fgets(STDIN));
     return $upper ? strtoupper($result) : $result;
@@ -47,56 +50,68 @@ function get_input($upper = FALSE) {
       // }
 
 
-        if ($input == 'A') {
+        if ($input == 'A') 
+        {
             asort($list);
         }
-            elseif ($input == 'Z') {
-                arsort($list);
-            }
-            elseif ($input == 'O') {
-                ksort($list);
-            }
-            elseif ($input == 'R') {
-                krsort($list);
-            } 
+        elseif ($input == 'Z') 
+        {
+            arsort($list);
+        }
+        elseif ($input == 'O') 
+        {
+            ksort($list);
+        }
+        elseif ($input == 'R') 
+        {
+            krsort($list);
+        } 
 
     return $list;
         
 
     }
 
-  function openfile($filename, $list) {
-  	is_readable($filename);
+  function openfile($filename, $list) 
+  {
+    is_readable($filename);
     $filesize = filesize($filename);
     $read = fopen($filename, 'r');
     feof($read); 
     $todo = trim(fread($read, $filesize));
     $explotodo = explode("\n", $todo);
-    foreach ($explotodo as $value) {
-    	array_push($list, $value);
-	}
+    foreach ($explotodo as $value) 
+    {
+      array_push($list, $value);
+    }
     fclose($read);
     return $list;
   }
 
 
-  function savefile($filename, $save) {
-	$handle = fopen($filename, 'w');
-	$wrote = fwrite($handle, implode("\n", $save));
-	    if ($wrote == true) {
-	      echo "Save was successful!\n";
-	    }	else {
-	        	echo "Save was unsuccessfull...\n";
-	        }
-	fclose($handle);
-	return $save;
+  function savefile($filename, $save) 
+  {
+  $handle = fopen($filename, 'w');
+  $wrote = fwrite($handle, implode("\n", $save));
+      if ($wrote == true) 
+      {
+        echo "Save was successful!\n";
+      } 
+      else 
+      {
+        echo "Save was unsuccessfull...\n";
+      }
+  fclose($handle);
+  return $save;
   }
 
 
 // The loop!
-do {
+do 
+{
     // Iterate through list items
-    foreach ($items as $key => $item) {
+    foreach ($items as $key => $item) 
+    {
         // Display each item and a newline
         $key ++;
         echo "[{$key}] {$item}\n";
@@ -110,21 +125,26 @@ do {
     $input = get_input(TRUE);
 
     // Check for actionable input
-    if ($input == 'N' || $input == 'n') {
+    if ($input == 'N' || $input == 'n') 
+    {
         // Ask for entry
         echo 'Enter item: ';
         // Add entry to list array
         $newitem = get_input(); 
         echo '(S)tart or (E)nd?';
         $input = get_input(TRUE);
-        if ($input == 'S') {
+        if ($input == 'S') 
+        {
           array_unshift($items, $newitem);
-        }  else {
+        }  
+        else 
+        {
           array_push($items, $newitem);
         }
 
 
-    } elseif ($input == 'R' || $input == 'r') {
+    } elseif ($input == 'R' || $input == 'r') 
+    {
         // Remove which item?
         echo 'Enter item number to remove: ';
         // Get array key
@@ -134,42 +154,51 @@ do {
 
         }
 
-        elseif ($input == 'S') {
+        elseif ($input == 'S') 
+        {
           $items = sort_menu($items);
 
         }
 
-        elseif ($input == 'F') {
+        elseif ($input == 'F') 
+        {
           array_shift($items);
         }
 
-        elseif ($input == 'L') {
+        elseif ($input == 'L') 
+        {
           array_pop($items);
         }
 
-        elseif ($input == 'O') {
-        	echo "What file do you want to open?";
-        	$filename = get_input();
+        elseif ($input == 'O') 
+        {
+          echo "What file do you want to open?";
+          $filename = get_input();
           $items = openfile($filename, $items);
-      	}
+        }
 
-         elseif ($input == 'A') {
-         	echo "What file do you want to save to?";
-         	$filename = get_input();
-         	
-       			if (is_readable($filename)) {
-       				echo "This file already exists! Would you like to overwrite it? Y/N.\n";
-       				$input = get_input(TRUE);
+         elseif ($input == 'A') 
+         {
+          echo "What file do you want to save to?";
+          $filename = get_input();
+          
+          if (is_readable($filename)) 
+          {
+          echo "This file already exists! Would you like to overwrite it? Y/N.\n";
+          $input = get_input(TRUE);
 
-       				if ($input == 'Y') {
-       					savefile($filename, $items);
-						
-					} 	else {
-							echo "File not saved.\n";
-						} 
+          if ($input == 'Y') 
+          {
+            savefile($filename, $items);
 
-         		}
-        } 		
+          }   
+          else 
+          {
+          echo "File not saved.\n";
+          } 
+
+          }
+        }     
     
     
 // Exit when input is (Q)uit
